@@ -1,6 +1,7 @@
-![Cerebellum platform flow](docs/images/cerebellum.png)
-
-# Cerebellum
+<div align="center">
+	<img src="docs/images/cerebellum.png" alt="Cerebellum platform flow" width="720" />
+	<h1>Cerebellum</h1>
+</div>
 
 Personal active-recall learning platform for aptitude practice and flashcards.
 
