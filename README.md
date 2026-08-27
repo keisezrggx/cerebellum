@@ -8,16 +8,7 @@ Personal active-recall learning platform for aptitude practice and flashcards.
 The first release is a modular monolith with a TypeScript web app and a Python content worker. The web app owns the user experience and application boundaries remain explicit so ingestion and generation can run asynchronously without coupling product workflows to model tooling.
 
 ## Product flow
-
-```text
-Manuals/PDFs -> Ingestion -> Dataset -> Retrieval -> Question generation
-											 |-> Numerical reasoning
-											 |-> Verbal reasoning
-											 |-> Logical reasoning
-
-Aptitude test -> Results/progress
-Dataset -> Flashcards -> Spaced repetition -> Review history
-```
+![alt text](docs/images/product_flow.png)
 
 ## Repository layout
 
