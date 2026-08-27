@@ -1,34 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cerebellum
 
-## Getting Started
+Personal active-recall learning platform for aptitude practice and flashcards.
 
-First, run the development server:
+The first release is a modular monolith with a TypeScript web app and a Python content worker. The web app owns the user experience and application boundaries remain explicit so ingestion and generation can run asynchronously without coupling product workflows to model tooling.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Product flow
+
+```text
+Manuals/PDFs -> Ingestion -> Dataset -> Retrieval -> Question generation
+											 |-> Numerical reasoning
+											 |-> Verbal reasoning
+											 |-> Logical reasoning
+
+Aptitude test -> Results/progress
+Dataset -> Flashcards -> Spaced repetition -> Review history
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Repository layout
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `src/app`: Next.js routes and UI composition
+- `src/features`: product capabilities and their use cases
+- `src/server`: persistence, retrieval, model, and integration adapters
+- `src/lib`: framework-independent shared utilities
+- `workers/content_pipeline`: Python PDF ingestion, retrieval, and question-generation worker
+- `tests`: unit, integration, and end-to-end test layers
+- `deploy`: deployment manifests and environment runbooks
+- `scripts`: repeatable local and release automation
+- `docs`: architecture and product decisions
 
-## Learn More
+## Local development
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application runs at `http://localhost:3000`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Before opening a pull request:
 
-## Deploy on Vercel
+```bash
+npm run lint
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The Python worker is independently managed:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+cd workers/content_pipeline
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[dev]'
+python -m pytest
+```
+
+The worker should communicate with the web app through versioned job payloads and durable storage, not by importing TypeScript code or sharing private implementation details.
+
+## Configuration
+
+Copy `.env.example` to `.env.local` for local development. Never commit credentials or user data. Production secrets belong in the deployment platform's secret manager.
+
+## Delivery principles
+
+- Keep domain rules independent from Next.js and vendor SDKs.
+- Treat uploaded learning material as private user data.
+- Make generated questions traceable to source material and model configuration.
+- Store review scheduling and history as durable records, not client state.
+- Add observability and a rollback path before production launch.
