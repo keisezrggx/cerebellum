@@ -1,5 +1,5 @@
 <div align="center">
-	<img src="docs/images/cerebellum.png" alt="Cerebellum platform flow" width="720" />
+	<img src="docs/images/cerebellum.png" alt="Cerebellum platform flow" width="250" />
 	<h1>Cerebellum</h1>
 </div>
 
