@@ -1,3 +1,5 @@
+![Cerebellum platform flow](docs/images/cerebellum.png)
+
 # Cerebellum
 
 Personal active-recall learning platform for aptitude practice and flashcards.
